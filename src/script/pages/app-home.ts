@@ -8,11 +8,15 @@ export class AppHome extends LitElement {
 
   // For more information on using properties in lit-element
   // check out this link https://lit-element.polymer-project.org/guide/properties#declare-with-decorators
-  @property() message: string = "Welcome!";
+  @property() message: string = "";
+
+  @property() w: number = 320;
+  @property() h: number = 240;
+  @property() ctx: CanvasRenderingContext2D;
 
   static get styles() {
     return css`
-      #welcomeBlock {
+      #mainBlock {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -20,15 +24,15 @@ export class AppHome extends LitElement {
         text-align: center;
       }
 
-      #welcomeBlock h2 {
+      #mainBlock h2 {
         margin-bottom: 0;
       }
 
-      #welcomeBlock p {
+      #mainBlock p {
         max-width: 22em;
       }
 
-      #welcomeBlock img {
+      #mainBlock img {
         width: 6em;
       }
 
@@ -43,7 +47,7 @@ export class AppHome extends LitElement {
       }
 
       @media(spanning: single-fold-vertical) {
-        #welcomeBlock {
+        #mainBlock {
           width: 50%;
         }
       }
@@ -52,6 +56,11 @@ export class AppHome extends LitElement {
 
   constructor() {
     super();
+    this.w = 320
+    this.h = 240
+    this.ctx = null
+    this.pixelWidth = 1
+    this.pixelHeight = 1
   }
 
   firstUpdated() {
@@ -60,36 +69,49 @@ export class AppHome extends LitElement {
     console.log('This is your home page');
   }
 
-  share() {
-    if ((navigator as any).share) {
-      (navigator as any).share({
-        title: 'PWABuilder pwa-starter',
-        text: 'Check out the PWABuilder pwa-starter!',
-        url: 'https://github.com/pwa-builder/pwa-starter',
-      })
-    }
+
+  handleClick() {
+    console.log('handleClick')
+  }
+
+
+  sumOfOdd() {
+
+  }
+
+  draw = () => {
+    const c = this.shadowRoot.getElementById('c')
+    this.ctx = c.getContext("2d");
+    this.ctx.clearRect(0, 0, this.w, this.h);
+    this.drawGrid()
+  }
+
+  drawGrid() {
+		// if (!this.hasGrid)
+		// 	return;
+		this.ctx.beginPath();
+		// vertical lines
+		for (var x = 0.5; x < this.w; x += this.pixelWidth) {
+			this.ctx.moveTo(x, 0);
+			this.ctx.lineTo(x, this.h);
+		}
+		// horizontal lines
+		for (var y = 0.5; y < this.h; y += this.pixelWidth) {
+			this.ctx.moveTo(0, y);
+			this.ctx.lineTo(this.w, y);
+		}
+		this.ctx.strokeStyle = "#eee";
+		this.ctx.closePath();
+		this.ctx.stroke();
   }
 
   render() {
     return html`
-      <div>
-
-        <div id="welcomeBlock">
-
-          <img src="assets/icons/icon_512.png" alt="app icon">
-          <h2>${this.message}</h2>
-
-          <p>
-            Welcome to the <a href="https://pwabuilder.com">PWABuilder</a> pwa-starter!
-
-            Be sure to head back to <a href="https://pwabuilder.com">PWABuilder</a> when you are ready to ship this PWA to the Microsoft, Google Play and Samsung Galaxy stores!
-          </p>
-
-          ${'share' in navigator ? html`<button @click="${this.share}">Share this Starter!</button>` : null}
-        </div>
-
-        <pwa-install>Install PWA Starter</pwa-install>
-      </div>
+		<div id="mainBlock">
+			<canvas @click="${this.handleClick}" id="c" width="320" height="240" style="border:1px solid #ccc"></canvas>
+			<canvas id="canvaspreview" width="32" height="24" style="border:1px solid #ccc"></canvas>
+      <button @click="${this.draw}">draw</button>
+    </div>
     `;
   }
 }
