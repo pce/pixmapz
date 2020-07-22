@@ -14,7 +14,7 @@ export class AppHome extends LitElement {
   @property() h: number = 240;
   @property() pixelWidth: number = 2;
   @property() pixelHeight: number = 2;
-  @property() ctx: CanvasRenderingthis.ctx2D;
+  @property() ctx: CanvasRenderingContext2D;
   @property() selectedColor: string = "#000";
 
   static get styles() {
@@ -69,6 +69,7 @@ export class AppHome extends LitElement {
     // this method is a lifecycle even in lit-element
     // for more info check out the lit-element docs https://lit-element.polymer-project.org/guide/lifecycle
     console.log('This is your home page');
+    this.draw()
   }
 
 
@@ -85,13 +86,19 @@ export class AppHome extends LitElement {
     let y = 0
     this.ctx.fillStyle = this.selectedColor;
 
+
+    let squareWidth = this.w / n
+    let squareHeight = this.h / n
+
     for (let i=1; i<=n; i+=2) {
       console.log(i)
       let sumOfOdds: number =  i ** 2
       console.log(sumOfOdds)
       // let squares = sumOfOdds/2
       // console.log(squares)
-      // drawSquare()
+      x += squareWidth
+      y += squareHeight
+      this.drawSquare(x, y,  squareWidth, squareHeight)
     }
 
   }
@@ -113,16 +120,15 @@ export class AppHome extends LitElement {
 
   }
 
-  drawSquare(x, y, width, height) {
-    this.ctx.fillRect(x * this.pixelWidth, y * this.pixelWidth, width, height);
-
-    // this.ctx.beginPath();
-    // this.ctx.rect(x, y, width, height);
-    // this.ctx.fillStyle = "yellow";
-    // this.ctx.fill();
-    // this.ctx.lineWidth = 7;
-    // this.ctx.strokeStyle = 'black';
-    // this.ctx.stroke();
+  drawSquare(x:number, y:number, width:number, height:number) {
+    // this.ctx.fillRect(x * this.pixelWidth, y * this.pixelWidth, width, height);
+    this.ctx.beginPath();
+    this.ctx.rect(x, y, width, height);
+    this.ctx.fillStyle = "yellow";
+    this.ctx.fill();
+    this.ctx.lineWidth = 7;
+    this.ctx.strokeStyle = 'black';
+    this.ctx.stroke();
   }
 
   drawGrid() {
@@ -149,6 +155,10 @@ export class AppHome extends LitElement {
 		<div id="mainBlock">
 			<canvas @click="${this.handleClick}" id="c" width="320" height="240" style="border:1px solid #ccc"></canvas>
 			<canvas id="canvaspreview" width="32" height="24" style="border:1px solid #ccc"></canvas>
+      <select>
+        <option>sum of odd is sqaure</option>
+        <option>...</option>
+      </select>
       <button @click="${this.draw}">draw</button>
     </div>
     `;
