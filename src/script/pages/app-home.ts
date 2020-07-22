@@ -12,7 +12,10 @@ export class AppHome extends LitElement {
 
   @property() w: number = 320;
   @property() h: number = 240;
-  @property() ctx: CanvasRenderingContext2D;
+  @property() pixelWidth: number = 2;
+  @property() pixelHeight: number = 2;
+  @property() ctx: CanvasRenderingthis.ctx2D;
+  @property() selectedColor: string = "#000";
 
   static get styles() {
     return css`
@@ -56,11 +59,10 @@ export class AppHome extends LitElement {
 
   constructor() {
     super();
-    this.w = 320
-    this.h = 240
-    this.ctx = null
-    this.pixelWidth = 1
-    this.pixelHeight = 1
+    // this.w = 320
+    // this.h = 240
+    // this.pixelWidth = 1
+    // this.pixelHeight = 1
   }
 
   firstUpdated() {
@@ -75,15 +77,52 @@ export class AppHome extends LitElement {
   }
 
 
-  sumOfOdd() {
+  sumOfOdd(n:number) {
+    // the sum of odd is sqaure : 1 + 3 ... 2n -1
+    // sum-of-odd / 2 = n(Left2Center) + n(Center2Bottom)
+    // gemoetric prove // 1^2, 3^2 ...
+    let x = 0
+    let y = 0
+    this.ctx.fillStyle = this.selectedColor;
+
+    for (let i=1; i<=n; i+=2) {
+      console.log(i)
+      let sumOfOdds: number =  i ** 2
+      console.log(sumOfOdds)
+      // let squares = sumOfOdds/2
+      // console.log(squares)
+      // drawSquare()
+    }
 
   }
 
   draw = () => {
-    const c = this.shadowRoot.getElementById('c')
+    const c =  <HTMLCanvasElement> this.shadowRoot.getElementById('c')
     this.ctx = c.getContext("2d");
-    this.ctx.clearRect(0, 0, this.w, this.h);
+
+    // this.ctx.clearRect(0, 0, this.w, this.h);
+
+		this.ctx.fillStyle = "#FFF";
+		this.ctx.clearRect(0, 0, this.w, this.h);
+		this.ctx.fillStyle = "#000";
+
     this.drawGrid()
+
+    this.sumOfOdd(9)
+
+
+  }
+
+  drawSquare(x, y, width, height) {
+    this.ctx.fillRect(x * this.pixelWidth, y * this.pixelWidth, width, height);
+
+    // this.ctx.beginPath();
+    // this.ctx.rect(x, y, width, height);
+    // this.ctx.fillStyle = "yellow";
+    // this.ctx.fill();
+    // this.ctx.lineWidth = 7;
+    // this.ctx.strokeStyle = 'black';
+    // this.ctx.stroke();
   }
 
   drawGrid() {
@@ -91,16 +130,16 @@ export class AppHome extends LitElement {
 		// 	return;
 		this.ctx.beginPath();
 		// vertical lines
-		for (var x = 0.5; x < this.w; x += this.pixelWidth) {
+		for (let x = 0.5; x < this.w; x += this.pixelWidth * 2) {
 			this.ctx.moveTo(x, 0);
 			this.ctx.lineTo(x, this.h);
 		}
 		// horizontal lines
-		for (var y = 0.5; y < this.h; y += this.pixelWidth) {
+		for (let y = 0.5; y < this.h; y += this.pixelWidth * 2) {
 			this.ctx.moveTo(0, y);
 			this.ctx.lineTo(this.w, y);
 		}
-		this.ctx.strokeStyle = "#eee";
+		this.ctx.strokeStyle = "#EEE";
 		this.ctx.closePath();
 		this.ctx.stroke();
   }
