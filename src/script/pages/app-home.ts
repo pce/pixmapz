@@ -104,22 +104,12 @@ export class AppHome extends LitElement {
     y = 0
     for (let i=0; i<=n; i++) {
       // draw the sum of Odd
+      let sumOfOdds: number = (1 + i) ** 2
       this.drawSquare(x, y,  squareWidth, squareHeight, "yellow")
+      this.drawText(x + 12 , y + 20, sumOfOdds.toString(), "orange")
       x += squareWidth
       y += squareHeight
     }
-
-    /*
-    for (let i=1; i<=n; i+=2) {
-      console.log(i)
-      let sumOfOdds: number =  i ** 2
-      console.log(sumOfOdds)
-      // let squares = sumOfOdds/2
-      // console.log(squares)
-      x += squareWidth
-      y += squareHeight
-      this.drawSquare(x, y,  squareWidth, squareHeight)
-    }*/
 
   }
 
@@ -140,7 +130,14 @@ export class AppHome extends LitElement {
 
   }
 
-  drawSquare(x:number, y:number, width:number, height:number, fillStyle) {
+
+  drawText(x:number, y:number, text:string, fillStyle:string) {
+    this.ctx.fillStyle = fillStyle;
+    this.ctx.font = "bold 16px Arial";
+    this.ctx.fillText(text, x, y);
+  }
+
+  drawSquare(x:number, y:number, width:number, height:number, fillStyle:string) {
     // this.ctx.fillRect(x * this.pixelWidth, y * this.pixelWidth, width, height);
     this.ctx.beginPath();
     this.ctx.rect(x, y, width, height);
