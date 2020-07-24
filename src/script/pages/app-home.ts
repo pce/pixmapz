@@ -90,6 +90,26 @@ export class AppHome extends LitElement {
     let squareWidth = this.w / n
     let squareHeight = this.h / n
 
+    // draw n * n square
+		for (let x = 0; x < this.w; x += squareWidth) {
+      // vertical square
+      this.drawSquare(x, y,  squareWidth, squareHeight, "green")
+      // horizontal square
+      for (let y = 0; y < this.h; y += squareHeight) {
+        this.drawSquare(x, y,  squareWidth, squareHeight, "green")
+      }
+    }
+
+    x = 0
+    y = 0
+    for (let i=0; i<=n; i++) {
+      // draw the sum of Odd
+      this.drawSquare(x, y,  squareWidth, squareHeight, "yellow")
+      x += squareWidth
+      y += squareHeight
+    }
+
+    /*
     for (let i=1; i<=n; i+=2) {
       console.log(i)
       let sumOfOdds: number =  i ** 2
@@ -99,7 +119,7 @@ export class AppHome extends LitElement {
       x += squareWidth
       y += squareHeight
       this.drawSquare(x, y,  squareWidth, squareHeight)
-    }
+    }*/
 
   }
 
@@ -120,11 +140,11 @@ export class AppHome extends LitElement {
 
   }
 
-  drawSquare(x:number, y:number, width:number, height:number) {
+  drawSquare(x:number, y:number, width:number, height:number, fillStyle) {
     // this.ctx.fillRect(x * this.pixelWidth, y * this.pixelWidth, width, height);
     this.ctx.beginPath();
     this.ctx.rect(x, y, width, height);
-    this.ctx.fillStyle = "yellow";
+    this.ctx.fillStyle = fillStyle
     this.ctx.fill();
     this.ctx.lineWidth = 7;
     this.ctx.strokeStyle = 'black';
