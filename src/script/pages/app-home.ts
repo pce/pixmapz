@@ -13,6 +13,7 @@ export class AppHome extends LitElement {
   @property() w: number = 320;
   @property() h: number = 240;
   @property() num: number = 5;
+  @property() hasGrid: false;
   @property() func: string = "sumOfOdd";
   @property() pixelWidth: number = 2;
   @property() pixelHeight: number = 2;
@@ -76,13 +77,12 @@ export class AppHome extends LitElement {
 
 
   handleClick() {
-    console.log('handleClick')
+    // console.log('handleClick')
   }
 
   handleChange = (e) => {
-    console.log('handleChange')
-    console.log(e)
-
+    // console.log('handleChange')
+    // console.log(e)
     if (e.target.name === 'num') {
       this.num = e.target.value
       return
@@ -97,9 +97,7 @@ export class AppHome extends LitElement {
       this[func](this.num)
     }
 
-
   }
-
 
   repaint() {
     this.draw()
@@ -112,17 +110,13 @@ export class AppHome extends LitElement {
     // let x = 0
     // let y = 0
     // this.ctx.fillStyle = this.selectedColor;
-
-    // for (let i=0; i<=n; i++) {
-    // }
-
+    // for (let i=0; i<=n; i++) {}
   }
 
   drawSquaresNTo1(n:number) {
     let x = 0
     let y = 0
     this.ctx.fillStyle = this.selectedColor;
-
 
     for (let i=0; i<=n; i++) {
       // adjust squares to fit
@@ -149,7 +143,6 @@ export class AppHome extends LitElement {
     let x = 0
     let y = 0
     this.ctx.fillStyle = this.selectedColor;
-
 
     let squareWidth = this.w / n
     let squareHeight = this.h / n
@@ -210,8 +203,9 @@ export class AppHome extends LitElement {
   }
 
   drawGrid() {
-		// if (!this.hasGrid)
-		// 	return;
+		if (!this.hasGrid) {
+      return;
+    }
 		this.ctx.beginPath();
 		// vertical lines
 		for (let x = 0.5; x < this.w; x += this.pixelWidth * 2) {
@@ -232,10 +226,10 @@ export class AppHome extends LitElement {
     return html`
 		<div id="mainBlock">
 			<canvas @click="${this.handleClick}" id="c" width="320" height="240" style="border:1px solid #ccc"></canvas>
-			<canvas id="canvaspreview" width="32" height="24" style="border:1px solid #ccc"></canvas>
+			<!-- <canvas id="canvaspreview" width="32" height="24" style="border:1px solid #ccc"></canvas> -->
       <select @change="${this.handleChange}" value="${this.func}" name="func">
         <option value="drawSquaresNTo1">Draw Squares from n(aside) + 1</option>
-        <option value="nicoMachusTheorem">Nico Machus Theorem</option>
+        <!-- <option value="nicoMachusTheorem">Nico Machus Theorem</option> -->
         <option value="sumOfOdd" selected>Sum of odd is sqaure</option>
       </select>
       <input type="number" value="${this.num}" name="num" @change=${this.handleChange}  />
