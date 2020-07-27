@@ -12,6 +12,8 @@ export class AppHome extends LitElement {
 
   @property() w: number = 320;
   @property() h: number = 240;
+  @property() num: number = 5;
+  @property() func: string = "sumOfOdd";
   @property() pixelWidth: number = 2;
   @property() pixelHeight: number = 2;
   @property() ctx: CanvasRenderingContext2D;
@@ -77,10 +79,31 @@ export class AppHome extends LitElement {
     console.log('handleClick')
   }
 
-  handleChange(e) {
+  handleChange = (e) => {
     console.log('handleChange')
     console.log(e)
-    // console.log(e.selected)
+
+    if (e.target.name === 'num') {
+      this.num = e.target.value
+      return
+    } else if (e.target.name === 'func') {
+      this.func = e.target.value
+    }
+
+    if (e.target) {
+      console.log(e.target.value)
+      let func = e.target.value
+      this.draw()
+      this[func](this.num)
+    }
+
+
+  }
+
+
+  repaint() {
+    this.draw()
+    this[this.func](this.num)
   }
 
   // gaussianPrimes() {}
@@ -157,19 +180,15 @@ export class AppHome extends LitElement {
   draw = () => {
     const c =  <HTMLCanvasElement> this.shadowRoot.getElementById('c')
     this.ctx = c.getContext("2d");
-
     // this.ctx.clearRect(0, 0, this.w, this.h);
-
 		this.ctx.fillStyle = "#FFF";
 		this.ctx.clearRect(0, 0, this.w, this.h);
 		this.ctx.fillStyle = "#000";
 
     this.drawGrid()
-
     // this.sumOfOdd(9)
+    // this.drawSquaresNTo1(5)
     // TODO this.nicoMachusTheorem(5)
-    this.drawSquaresNTo1(5)
-
   }
 
 
@@ -214,12 +233,13 @@ export class AppHome extends LitElement {
 		<div id="mainBlock">
 			<canvas @click="${this.handleClick}" id="c" width="320" height="240" style="border:1px solid #ccc"></canvas>
 			<canvas id="canvaspreview" width="32" height="24" style="border:1px solid #ccc"></canvas>
-      <select @change="${this.handleChange}">
+      <select @change="${this.handleChange}" value="${this.func}" name="func">
         <option value="drawSquaresNTo1">Draw Squares from n(aside) + 1</option>
         <option value="nicoMachusTheorem">Nico Machus Theorem</option>
-        <option value="sumOfOdd">Sum of odd is sqaure</option>
+        <option value="sumOfOdd" selected>Sum of odd is sqaure</option>
       </select>
-      <button @click="${this.draw}">draw</button>
+      <input type="number" value="${this.num}" name="num" @change=${this.handleChange}  />
+      <button @click="${this.repaint}">draw</button>
     </div>
     `;
   }
