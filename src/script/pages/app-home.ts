@@ -77,6 +77,47 @@ export class AppHome extends LitElement {
     console.log('handleClick')
   }
 
+  handleChange(e) {
+    console.log('handleChange')
+    console.log(e)
+    // console.log(e.selected)
+  }
+
+  // gaussianPrimes() {}
+
+  nicoMachusTheorem(n:number) {
+    // let x = 0
+    // let y = 0
+    // this.ctx.fillStyle = this.selectedColor;
+
+    // for (let i=0; i<=n; i++) {
+    // }
+
+  }
+
+  drawSquaresNTo1(n:number) {
+    let x = 0
+    let y = 0
+    this.ctx.fillStyle = this.selectedColor;
+
+
+    for (let i=0; i<=n; i++) {
+      // adjust squares to fit
+      let squareWidth = this.w / i
+      let squareHeight = this.h / i
+      // draw n * n square
+      for (let x = 0; x < this.w; x += squareWidth) {
+        // vertical square
+        this.drawSquare(x, y,  squareWidth, squareHeight, "green")
+      }
+      // horizontal square
+      for (let y = 0; y < this.h; y += squareHeight) {
+        this.drawSquare(x, y,  squareWidth, squareHeight, "green")
+      }
+    }
+  }
+
+
 
   sumOfOdd(n:number) {
     // the sum of odd is sqaure : 1 + 3 ... 2n -1
@@ -125,8 +166,9 @@ export class AppHome extends LitElement {
 
     this.drawGrid()
 
-    this.sumOfOdd(9)
-
+    // this.sumOfOdd(9)
+    // TODO this.nicoMachusTheorem(5)
+    this.drawSquaresNTo1(5)
 
   }
 
@@ -172,9 +214,10 @@ export class AppHome extends LitElement {
 		<div id="mainBlock">
 			<canvas @click="${this.handleClick}" id="c" width="320" height="240" style="border:1px solid #ccc"></canvas>
 			<canvas id="canvaspreview" width="32" height="24" style="border:1px solid #ccc"></canvas>
-      <select>
-        <option>sum of odd is sqaure</option>
-        <option>...</option>
+      <select @change="${this.handleChange}">
+        <option value="drawSquaresNTo1">Draw Squares from n(aside) + 1</option>
+        <option value="nicoMachusTheorem">Nico Machus Theorem</option>
+        <option value="sumOfOdd">Sum of odd is sqaure</option>
       </select>
       <button @click="${this.draw}">draw</button>
     </div>
